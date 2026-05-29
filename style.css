@@ -1,0 +1,134 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+  position: relative;
+  padding: 20px;
+}
+#bg-video {
+  position: fixed;
+  top: 50%; left: 50%;
+  min-width: 100%; min-height: 100%;
+  width: auto; height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: -2;
+}
+#overlay-dark {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.65);
+  z-index: -1;
+}
+.logo { margin-bottom: clamp(24px, 5vh, 40px); animation: fadeIn 0.8s ease forwards; }
+.logo img { width: clamp(120px, 25vw, 160px); height: auto; }
+.buttons { display: flex; flex-direction: column; gap: 14px; width: clamp(260px, 85vw, 320px); }
+.btn {
+  opacity: 0; transform: translateY(-20px);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 14px 18px; border-radius: 10px; font-weight: 700; font-size: 16px;
+  cursor: pointer; text-decoration: none; transition: all 0.2s ease;
+  color: white; animation: dropDown 0.6s ease forwards; border: none;
+  user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.btn img { width: 22px; height: 22px; }
+.btn.discord { background: #5865f2; animation-delay: 0.2s; }
+.btn.play { background: #2ecc71; animation-delay: 0.4s; }
+.btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+.btn:active { transform: scale(0.98); }
+.footer {
+  margin-top: clamp(28px, 6vh, 44px); display: flex; gap: 24px;
+  justify-content: center; opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 0.8s;
+}
+.footer img { width: 38px; height: 38px; cursor: pointer; transition: transform 0.2s ease; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); }
+.footer img:hover { transform: scale(1.12); }
+.credits { margin-top: 20px; font-size: 10px; color: #aaa; max-width: 90vw; line-height: 1.5; opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 1s; padding: 0 10px; }
+@keyframes dropDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 768px) {
+  body { padding: 16px; }
+  .buttons { gap: 12px; }
+  .btn { font-size: 15px; padding: 13px 16px; }
+  .footer { gap: 20px; }
+  .footer img { width: 34px; height: 34px; }
+  .credits { font-size: 9px; }
+}
+#preloader{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s}
+.loader{text-align:center;color:#fff}
+.loader img{width:80px;animation:pulse 1.5s infinite}
+.loader p{margin-top:12px;font-size:14px;opacity:.7}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+
+/* Mute button */
+.mute-btn{position:fixed;top:20px;right:20px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(5px);z-index:100;transition:.2s}
+.mute-btn:hover{background:rgba(0,0,0,.7);transform:scale(1.05)}
+
+/* Server status */
+.server-status{margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;color:#ddd;opacity:0;animation:fadeIn 1s forwards;animation-delay:1.2s}
+.server-status .dot{width:8px;height:8px;border-radius:50%;background:#2ecc71;box-shadow:0 0 8px #2ecc71;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* --- MOBILE ANDROID & iOS --- */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Video biar nggak zoom aneh di iOS */
+#bg-video {
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+/* Mute button */
+.mute-btn {
+  top: calc(12px + env(safe-area-inset-top));
+  right: calc(12px + env(safe-area-inset-right));
+  width: 48px;
+  height: 48px;
+}
+
+/* Android Chrome 100vh fix */
+@supports (height: 100dvh) {
+  body { min-height: 100dvh; }
+}
+
+/* HP kecil */
+@media (max-width: 480px) {
+  .logo img { width: clamp(100px, 40vw, 140px); }
+  .buttons { width: 90vw; gap: 12px; }
+  .btn { 
+    min-height: 48px; /* Apple guideline */
+    font-size: 16px;
+    padding: 14px 16px;
+  }
+  .server-status { font-size: 13px; }
+  .footer { gap: 28px; margin-top: 24px; }
+  .footer img { width: 32px; height: 32px; }
+  #overlay-dark { background: rgba(0,0,0,0.75); }
+}
+
+video::-webkit-media-controls { display: none !important; }
+
+.discord-count {
+  font-size: 12px;
+  color: #b9bbbe;
+  margin-top: -8px;
+  margin-bottom: 4px;
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
+  animation-delay: 0.6s;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
